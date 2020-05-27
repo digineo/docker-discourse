@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+export RAILS_ENV=production
+export NODE_ENV=production
+
+root=$(dirname "$(realpath $0)")
+
+$root/configure
+
+cd $root/current
+rake db:migrate
+
+precompiled=root/shared/.assets-precompiled
+if [ ! -e $precompiled ]; then
+  rake assets:precompile
+  touch $precompiled
+fi
+
+cat > config/puma.rb << EOF
+# First, you need to change these below to your situation.
+APP_ROOT = '${root}/current'
+
+# Second, you can choose how many threads that you are going to run at same time.
+workers 2
+threads 8, 32
+preload_app!
+EOF
+
+exec bin/rails server

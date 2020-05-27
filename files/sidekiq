@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+export RAILS_ENV=production
+
+root=$(dirname "$(realpath $0)")
+
+$root/configure
+
+cd $root/current
+exec bundle exec sidekiq

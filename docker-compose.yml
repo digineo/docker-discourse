@@ -1,0 +1,43 @@
+version: '3'
+services:
+  postgres:
+    image: "postgres:12-alpine"
+    volumes:
+    - postgres:/var/lib/postgresql/data
+    environment: &pgenv
+      POSTGRES_USER: discourse
+      POSTGRES_PASSWORD: mysecret
+  redis:
+    image: "redis:5"
+    volumes:
+    - redis:/data
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+    - discourse:/app/shared
+    environment: &webenv
+      <<: *pgenv
+      DISCOURSE_HOSTNAME: "www.example.com"
+  sidekiq:
+    build: .
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+    - discourse:/app/shared
+    entrypoint: /app/sidekiq
+    environment:
+      <<: *webenv
+
+volumes:
+  postgres:
+    driver: local
+  redis:
+    driver: local
+  discourse:
+    driver: local
