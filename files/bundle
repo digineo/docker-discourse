@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+source ./_configure
+
+cd $root/current
+exec bin/bundle $@

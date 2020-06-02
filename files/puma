@@ -1,18 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
-
-export RAILS_ENV=production
-export NODE_ENV=production
-
-root=$(dirname "$(realpath $0)")
-
-$root/configure
+source ./_configure
 
 cd $root/current
 rake db:migrate
 
-precompiled=root/shared/.assets-precompiled
+precompiled=$root/shared/.assets-precompiled
 if [ ! -e $precompiled ]; then
   rake assets:precompile
   touch $precompiled
@@ -26,6 +20,10 @@ APP_ROOT = '${root}/current'
 workers 2
 threads 8, 32
 preload_app!
+
+pidfile false
 EOF
 
-exec bin/rails server
+rm -f /app/current/tmp/pids/server.pid
+
+exec bin/rails server --log-to-stdout

@@ -5,10 +5,6 @@ set -e
 export RAILS_ENV=production
 export NODE_ENV=production
 
-mkdir -p \
-  shared/public/uploads \
-  shared/public/assets
-
 cd current
 
 bundle config set deployment 'true'

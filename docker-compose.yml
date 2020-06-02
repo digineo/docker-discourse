@@ -11,10 +11,8 @@ services:
     image: "redis:5"
     volumes:
     - redis:/data
-  web:
+  puma:
     build: .
-    ports:
-      - "3000:3000"
     depends_on:
       - postgres
       - redis
@@ -22,15 +20,13 @@ services:
     - discourse:/app/shared
     environment: &webenv
       <<: *pgenv
-      DISCOURSE_HOSTNAME: "www.example.com"
   sidekiq:
     build: .
     depends_on:
-      - postgres
-      - redis
+      - puma
     volumes:
     - discourse:/app/shared
-    entrypoint: /app/sidekiq
+    entrypoint: /app/bundle exec sidekiq
     environment:
       <<: *webenv
 

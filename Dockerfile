@@ -15,15 +15,16 @@ RUN set -ex; \
     nodejs yarn; \
   rm -rf /var/lib/apt/lists/*
 
-RUN gem update --system --no-document && ln -s /usr/bin/bundle2.7 /usr/bin/bundle
+RUN gem update --system --no-document && ln -s /usr/bin/bundle2.7 /usr/bin/bundle && gem install bundler:2.1.4 --no-document
 RUN groupadd -r discourse && useradd --no-log-init -r -g discourse --home /app discourse
 RUN git clone --depth 1 https://github.com/discourse/discourse.git /app/current
 
 WORKDIR /app
-COPY files/* /app/
-RUN chown discourse:discourse -R . && su discourse ./install
-
 VOLUME /app/shared
+COPY files/install /app/
+RUN chown discourse:discourse -R . && su discourse ./install
+COPY files/* /app/
+
 EXPOSE 3000
 
-CMD ["su", "discourse", "/app/puma"]
+CMD /app/puma

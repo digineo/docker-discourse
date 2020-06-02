@@ -1,0 +1,23 @@
+#!/bin/bash
+
+root=$(dirname "$(realpath $0)")
+
+for folder in public/uploads public/assets public/stylesheets; do
+  mkdir -p $root/shared/$folder
+  [ -e $root/current/$folder ] || ln -sf $root/shared/$folder $root/current/$folder
+done
+
+chown discourse -R $root/shared
+
+export RAILS_ENV=production
+export NODE_ENV=production
+export DISCOURSE_DB_POOL=8
+export DISCOURSE_DB_TIMEOUT=5000
+export DISCOURSE_DB_CONNECT_TIMEOUT=5
+export DISCOURSE_DB_HOST=postgres
+export DISCOURSE_DB_NAME=$POSTGRES_USER
+export DISCOURSE_DB_USERNAME=$POSTGRES_USER
+export DISCOURSE_DB_PASSWORD=$POSTGRES_PASSWORD
+export DISCOURSE_REDIS_HOST=redis
+export DISCOURSE_REDIS_PORT=6379
+export DISCOURSE_REDIS_DB=0
