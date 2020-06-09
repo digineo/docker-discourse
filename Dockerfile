@@ -19,6 +19,10 @@ RUN gem update --system --no-document && ln -s /usr/bin/bundle2.7 /usr/bin/bundl
 RUN groupadd -r discourse && useradd --no-log-init -r -g discourse --home /app discourse
 RUN git clone --depth 1 https://github.com/discourse/discourse.git /app/current
 
+RUN curl -fsLo /tmp/caddy.deb https://github.com/caddyserver/caddy/releases/download/v2.0.0/caddy_2.0.0_linux_amd64.deb \
+  && dpkg -i /tmp/caddy.deb \
+  && rm /tmp/caddy.deb
+
 WORKDIR /app
 VOLUME /app/shared
 COPY files/install /app/
