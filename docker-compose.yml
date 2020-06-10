@@ -18,7 +18,8 @@ services:
       - redis
     volumes:
     - discourse:/app/shared
-    environment: &webenv
+    env_file: discourse.env
+    environment:
       <<: *pgenv
   sidekiq:
     build: .
@@ -27,15 +28,15 @@ services:
     volumes:
     - discourse:/app/shared
     entrypoint: /app/bundle exec sidekiq
+    env_file: discourse.env
     environment:
-      <<: *webenv
+      <<: *pgenv
   caddy:
     build: .
     volumes:
     - discourse:/app/shared
     entrypoint: /app/caddy
-    environment:
-      <<: *webenv
+    env_file: discourse.env
     ports:
       - "80:3000"
 

@@ -5,30 +5,36 @@ source ./_configure
 
 cat > /etc/caddy/Caddyfile << EOF
 
-$HTTP_SCHEME://$DISCOURSE_HOSTNAME:3000/ {
-  root * /app/current/public
-  encode gzip
-  log
+${CADDY_HOST:-$DISCOURSE_HOSTNAME}
 
-  @notStatic {
-    not {
-      path /assets/*
-    }
-    not {
-      path /stylesheets/*
-    }
-    not {
-      path /uploads/*
-    }
-    not {
-      file {
-        try_files {path}
-      }
+root * /app/current/public
+encode gzip
+
+header /assets/* Cache-Control "max-age=31536000"
+
+@notStatic {
+  not {
+    path /assets/*
+  }
+  not {
+    path /uploads/*
+  }
+  not {
+    path /images/*
+  }
+  not {
+    file {
+      try_files {path}
     }
   }
-  reverse_proxy @notStatic http://puma:3000
-  file_server
 }
+reverse_proxy @notStatic http://puma:3000
+
+file_server
 EOF
 
-exec /usr/bin/caddy run -config /etc/caddy/Caddyfile
+# Allow overriding the Caddyfile
+caddyfile=$root/shared/caddy/Caddyfile
+[ -e "$caddyfile" ] || caddyfile=/etc/caddy/Caddyfile
+
+exec /usr/bin/caddy run -config "$caddyfile"
