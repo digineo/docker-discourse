@@ -22,7 +22,8 @@ RUN set -ex; \
   dpkg -i /tmp/caddy.deb; \
   rm /tmp/caddy.deb
 
-RUN git clone --depth 1 https://github.com/discourse/discourse.git /app/current
+ARG VERSION=master
+RUN git clone --depth 1 https://github.com/discourse/discourse.git -b $VERSION -c advice.detachedHead=false /app/current
 
 WORKDIR /app
 VOLUME /app/shared

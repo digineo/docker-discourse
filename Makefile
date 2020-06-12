@@ -1,10 +1,16 @@
 
-TAG=digineode/discourse:latest
+VERSION=master
+REPO=digineode/discourse
 
-.PHONY: image
-image:
-	docker build -t ${TAG} .
+.PHONY: build
+build:
+	docker build -t ${REPO}:latest --build-arg "VERSION=${VERSION}" .
 
 .PHONY: push
-push: image
-	docker push ${TAG}
+push: build
+	docker push ${REPO}:latest
+ifneq ($(VERSION),master)
+	docker tag  ${REPO}:latest ${REPO}:${VERSION}
+	docker push ${REPO}:${VERSION}
+endif
+
