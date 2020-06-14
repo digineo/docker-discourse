@@ -27,7 +27,7 @@ services:
       - puma
     volumes:
     - discourse:/app/shared
-    entrypoint: /app/bundle exec sidekiq
+    entrypoint: /app/bundle exec sidekiq --config /app/sidekiq.yml
     env_file: discourse.env
     environment:
       <<: *pgenv
