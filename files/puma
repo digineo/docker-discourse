@@ -6,10 +6,11 @@ source ./_configure
 cd $root/current
 rake db:migrate
 
+reference=$root/current
 precompiled=$root/shared/.assets-precompiled
-if [ ! -e $precompiled ]; then
+if [ ! -e "$precompiled" ] || [ "$reference" -nt "$precompiled" ] || [ "$reference" -ot "$precompiled" ]; then
   rake assets:precompile
-  touch $precompiled
+  touch $precompiled -r $reference
 fi
 
 cat > config/puma.rb << EOF
