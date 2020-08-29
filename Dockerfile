@@ -33,6 +33,7 @@ FROM ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
+ARG CADDY_VERSION=2.1.1
 
 WORKDIR /app
 COPY --from=builder /app .
@@ -50,10 +51,9 @@ RUN set -ex; \
     nodejs yarn; \
   gem update --system --no-document; \
   ln -s /usr/bin/bundle2.7 /usr/bin/bundle; \
-  curl -fsLo /tmp/caddy.deb https://github.com/caddyserver/caddy/releases/download/v2.0.0/caddy_2.0.0_linux_amd64.deb; \
+  curl -fsLo /tmp/caddy.deb https://github.com/caddyserver/caddy/releases/download/v$CADDY_VERSION/caddy_$CADDY_VERSION_linux_amd64.deb; \
   dpkg -i /tmp/caddy.deb; \
-  rm /tmp/caddy.deb; \
-  rm -rf /var/lib/apt/lists/*; \
+  rm -rf /tmp/*.deb /var/lib/apt/lists/*; \
   yarn install
 
 
