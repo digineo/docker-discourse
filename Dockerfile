@@ -49,9 +49,12 @@ RUN set -ex; \
   curl -sL https://deb.nodesource.com/setup_12.x | bash -; \
   apt-get install --yes --no-install-recommends \
     nodejs yarn; \
-  gem update --system --no-document; \
-  ln -s /usr/bin/bundle2.7 /usr/bin/bundle; \
-  curl -fsLo /tmp/caddy.deb https://github.com/caddyserver/caddy/releases/download/v$CADDY_VERSION/caddy_$CADDY_VERSION_linux_amd64.deb; \
+  gem update --system 3.1.4; \
+  rm -rfv /usr/bin/bundle*2.7 /usr/lib/ruby/2.7.0/bundler*; \
+  ln -fs /var/lib/gems/2.7.0/gems/rubygems-update-3.1.4/bundler/lib/bundler.rb /usr/lib/ruby/2.7.0/bundler.rb; \
+  ln -fs /var/lib/gems/2.7.0/gems/rubygems-update-3.1.4/bundler/lib/bundler /usr/lib/ruby/2.7.0/bundler; \
+  ln -fs /var/lib/gems/2.7.0/gems/rubygems-update-3.1.4/bundler/exe/bundle /usr/bin/bundle; \
+  curl -fsLo /tmp/caddy.deb https://github.com/caddyserver/caddy/releases/download/v$CADDY_VERSION/caddy_${CADDY_VERSION}_linux_amd64.deb; \
   dpkg -i /tmp/caddy.deb; \
   rm -rf /tmp/*.deb /var/lib/apt/lists/*; \
   yarn install
