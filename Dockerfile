@@ -33,7 +33,7 @@ FROM ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
-ARG CADDY_VERSION=2.1.1
+ARG CADDY_VERSION=2.2.0
 
 WORKDIR /app
 COPY --from=builder /app .
