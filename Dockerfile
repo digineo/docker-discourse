@@ -16,7 +16,7 @@ RUN set -ex; \
   gem update --system --no-document; \
   ln -s /usr/bin/bundle2.7 /usr/bin/bundle
 
-RUN git clone --depth 1 https://github.com/discourse/discourse.git -b $VERSION -c advice.detachedHead=false /app/current
+RUN git clone --depth 1 https://github.com/discourse/discourse.git -b $VERSION -c advice.detachedHead=false /app/current && rm -rf /app/current/.git*
 
 RUN set -ex; \
   cd /app/current; \
