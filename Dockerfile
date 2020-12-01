@@ -46,7 +46,7 @@ RUN set -ex; \
     advancecomp brotli jhead jpegoptim libjpeg-turbo-progs imagemagick optipng pngcrush gifsicle pngquant; \
   echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list; \
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -; \
-  curl -sL https://deb.nodesource.com/setup_12.x | bash -; \
+  curl -sL https://deb.nodesource.com/setup_14.x | bash -; \
   apt-get install --yes --no-install-recommends \
     nodejs yarn; \
   gem update --system 3.1.4; \
