@@ -6,13 +6,13 @@ shared=$root/shared
 
 # Shared folders for Rails
 for folder in public/uploads public/assets; do
-  mkdir -p $shared/$folder
-  [ -e $current/$folder ] || ln -sf $shared/$folder $current/$folder
+  mkdir -pv $shared/$folder
+  [ -e $current/$folder ] || ln -sfv $shared/$folder $current/$folder
 done
 
 # Shared folder for Caddy
-mkdir -p ~/.local/share $shared/caddy
-[ -e ~/.local/share/caddy ] || ln -sf $shared/caddy ~/.local/share/caddy
+mkdir -pv ~/.local/share $shared/caddy
+[ -e ~/.local/share/caddy ] || ln -sfv $shared/caddy ~/.local/share/caddy
 
 # Set defaults for discourse
 set -a
