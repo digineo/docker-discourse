@@ -4,12 +4,12 @@ set -e
 source ./_configure
 
 cd $root/current
-rake db:migrate
+bundle exec rake db:migrate
 
 reference=$root/current
 precompiled=$root/shared/.assets-precompiled
 if [ ! -e "$precompiled" ] || [ "$reference" -nt "$precompiled" ] || [ "$reference" -ot "$precompiled" ]; then
-  rake assets:precompile
+  bundle exec rake assets:precompile
   touch $precompiled -r $reference
 fi
 

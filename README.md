@@ -8,7 +8,7 @@ You find my
 
 ## Building a specific version
 
-    make build VERSION=v2.5.0.beta7
+    make build VERSION=v2.7.0
 
 ## Create admin account
 
