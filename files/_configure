@@ -10,10 +10,6 @@ for folder in public/uploads public/assets; do
   [ -e $current/$folder ] || ln -sfv $shared/$folder $current/$folder
 done
 
-# Shared folder for Caddy
-mkdir -pv ~/.local/share $shared/caddy
-[ -e ~/.local/share/caddy ] || ln -sfv $shared/caddy ~/.local/share/caddy
-
 # Set defaults for discourse
 set -a
 : ${DISCOURSE_DB_POOL:=8}

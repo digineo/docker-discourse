@@ -12,7 +12,7 @@ services:
     volumes:
     - redis:/data
   puma:
-    build: .
+    image: digineode/discourse:latest
     depends_on:
       - postgres
       - redis
@@ -22,7 +22,7 @@ services:
     environment:
       <<: *pgenv
   sidekiq:
-    build: .
+    image: digineode/discourse:latest
     depends_on:
       - puma
     volumes:
@@ -31,14 +31,16 @@ services:
     env_file: discourse.env
     environment:
       <<: *pgenv
-  caddy:
-    build: .
+  nginx:
+    image: digineode/discourse:latest
+    depends_on:
+      - puma
     volumes:
     - discourse:/app/shared
-    entrypoint: /app/caddy
+    entrypoint: /app/nginx
     env_file: discourse.env
     ports:
-      - "80:3000"
+      - "3000:80"
 
 volumes:
   postgres:

@@ -6,6 +6,12 @@ source ./_configure
 cd $root/current
 bundle exec rake db:migrate
 
+
+# Fix uglifier issue
+# https://github.com/lautis/uglifier/issues/127
+sed -i 's/.*:uglifier/require "uglifier"; config.assets.js_compressor = Uglifier.new(harmony: true)/' /app/current/config/environments/production.rb
+
+
 reference=$root/current
 precompiled=$root/shared/.assets-precompiled
 if [ ! -e "$precompiled" ] || [ "$reference" -nt "$precompiled" ] || [ "$reference" -ot "$precompiled" ]; then

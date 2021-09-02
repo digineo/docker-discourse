@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+source ./_configure
+
+exec nginx -c /app/nginx.conf
